@@ -1,6 +1,8 @@
 import type { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
+import useSWR from "swr";
+import type { Payment } from "../lib/payments";
 import styles from "../styles/Home.module.css";
 
 export const getStaticProps: GetStaticProps<{}> = async () => {
@@ -9,7 +11,18 @@ export const getStaticProps: GetStaticProps<{}> = async () => {
   };
 };
 
+const fetcher = (...args: unknown[]) => {
+  // @ts-ignore
+  return fetch(...args).then((res) => res.json());
+};
+
 const Home: NextPage = () => {
+  const { data: payment, error } = useSWR<{ data: Payment }>(
+    "/api/payments",
+    fetcher
+  );
+
+  console.log(payment?.data, error);
   return (
     <div className={styles.container}>
       <Head>
