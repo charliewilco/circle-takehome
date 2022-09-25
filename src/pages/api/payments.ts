@@ -12,6 +12,7 @@ const handler: NextApiHandler = async (req, res) => {
 
   if (req.method?.toLowerCase() === "put") {
     const payment = req.body;
+
     if (!_.isString(payment.id)) {
       return res.status(400).json({ error: "Incorrectly formatted id" });
     }
